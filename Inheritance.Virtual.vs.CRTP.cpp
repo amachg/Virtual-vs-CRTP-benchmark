@@ -1,5 +1,6 @@
 #include <iostream>
-#include <chrono>		//steady_clock, time_point, milliseconds, duration_cast
+#include <chrono>
+
 const unsigned N = 100'000;
 
 //The Dynamically-polymorphic implementation
@@ -56,6 +57,8 @@ void run_crtp(CRTPInterface<Implementation>* obj) {
     }
   }
 }
+
+///////////////////////////////////////////////////////////////////////
 
 template <typename ΜονάδαΧρόνου = std::chrono::milliseconds>
 struct Χρονόμετρο {
