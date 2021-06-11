@@ -1,0 +1,1 @@
+# Inheritance.Virtual.vs.CRTP
