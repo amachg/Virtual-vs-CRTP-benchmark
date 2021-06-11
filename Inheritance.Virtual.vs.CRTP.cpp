@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <chrono>
 
-const unsigned N = 100'000;
+const unsigned N = 10'000;
 
 //The Dynamically-polymorphic implementation
 class DynamicInterface {
@@ -74,6 +74,7 @@ struct Χρονόμετρο {
 };
 
 int main() {
+    std::cout << "Main started \n";
     DynamicImplementation* dyna = new(DynamicImplementation);
 	const auto χρονικήδιάρκεια1 = Χρονόμετρο<>::διάρκεια([&dyna]() { run_dynamic(dyna); });
     std::cout << "Dynamic (virtual): " << χρονικήδιάρκεια1.count() << " msecs\n";
