@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <chrono>
 
-const unsigned N = 100'000;
+const unsigned N = 50'000;
 
 //The Dynamically-polymorphic
 class DynamicInterface {
