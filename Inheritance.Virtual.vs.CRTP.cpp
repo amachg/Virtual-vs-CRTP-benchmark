@@ -1,9 +1,9 @@
 ﻿#include <iostream>
 #include <chrono>
 
-const unsigned N = 10'000;
+const unsigned N = 500'000;
 
-//The Dynamically-polymorphic implementation
+//The Dynamically-polymorphic
 class DynamicInterface {
 public:
   virtual void tick(uint64_t n) = 0;
@@ -11,24 +11,25 @@ public:
 };
 
 class DynamicImplementation : public DynamicInterface {
-  uint64_t counter;
 public:
   DynamicImplementation() : counter(0) {  }
 
   virtual void tick(uint64_t n) { counter += n; }
 
   virtual uint64_t getvalue() { return counter; }
+private:
+  uint64_t counter;
 };
 
-void run_dynamic(DynamicInterface* obj) {
+void work(DynamicInterface&& obj) {
   for (unsigned i = 0; i < N; ++i) {
     for (unsigned j = 0; j < i; ++j) {
-      obj->tick(j);
+      obj.tick(j);
     }
   }
 }
 
-//The alternative statically-polymorphic implementation
+//The alternative statically-polymorphic
 template <typename Implementation>
 class CRTPInterface {
 public:
@@ -40,20 +41,21 @@ private:
 };
 
 class CRTPImplementation : public CRTPInterface<CRTPImplementation> {
-  uint64_t counter;
 public:
   CRTPImplementation() : counter(0) { }
 
   void tick(uint64_t n) { counter += n; }
 
   uint64_t getvalue() { return counter; }
+private:
+  uint64_t counter;
 };
 
 template <typename Implementation>
-void run_crtp(CRTPInterface<Implementation>* obj) {
+void work(CRTPInterface<Implementation>&& obj) {
   for (unsigned i = 0; i < N; ++i) {
     for (unsigned j = 0; j < i; ++j) {
-      obj->tick(j);
+      obj.tick(j);
     }
   }
 }
@@ -75,11 +77,14 @@ struct Χρονόμετρο {
 
 int main() {
     std::cout << "Main started \n";
-    DynamicImplementation* dyna = new(DynamicImplementation);
-	const auto χρονικήδιάρκεια1 = Χρονόμετρο<>::διάρκεια([&dyna]() { run_dynamic(dyna); });
-    std::cout << "Dynamic (virtual): " << χρονικήδιάρκεια1.count() << " msecs\n";
+
+	const auto dyn_διάρκεια = Χρονόμετρο<>::διάρκεια([]() {
+		work(DynamicImplementation{});
+		});
+    std::cout << "Dynamic (virtual): " << dyn_διάρκεια.count() << " msecs\n";
 	
-    CRTPImplementation* sta = new(CRTPImplementation);
-	const auto χρονικήδιάρκεια2 = Χρονόμετρο<>::διάρκεια([&sta]() { run_crtp(sta); });
-    std::cout << "Static (C.R.T.P.): " << χρονικήδιάρκεια2.count() << " msecs\n";
+	const auto sta_διάρκεια = Χρονόμετρο<>::διάρκεια([]() {
+		work(CRTPImplementation{});
+		});
+    std::cout << "Static (C.R.T.P.): " << sta_διάρκεια.count() << " msecs\n";
 }
