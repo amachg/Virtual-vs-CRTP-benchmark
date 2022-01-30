@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿//Inheritance: Virtual vs. CRTP
+
+#include <iostream>
 #include <chrono>
 
 const unsigned N = 50'000;
