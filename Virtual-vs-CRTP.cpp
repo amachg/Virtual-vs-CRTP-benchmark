@@ -1,4 +1,4 @@
-﻿//Inheritance: Virtual vs. CRTP
+﻿//Inheritance: Virtual vs. CRTP ταχύτητα
 
 #include <iostream>
 #include <chrono>
