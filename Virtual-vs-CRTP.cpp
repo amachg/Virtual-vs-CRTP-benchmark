@@ -3,7 +3,7 @@
 #include <iostream>
 #include <chrono>
 
-const unsigned N = 100'000;
+const unsigned N = 200'000;
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -90,14 +90,14 @@ struct Timer {
 
 int main() {
     std::cout << "Started timing polymorphic modes in c++ \n";
-
-	const auto dynamicDuration = Timer<>::duration([]() {
-		work(DynamicImplementation{});
-		});
-    std::cout << "Dynamic (Virtuals): " << dynamicDuration.count() << " msecs\n";
 	
 	const auto staticDuration = Timer<>::duration([]() {
 		work(CRTPImplementation{});
 		});
     std::cout << "Static (CRTP): " << staticDuration.count() << " msecs\n";
+
+	const auto dynamicDuration = Timer<>::duration([]() {
+		work(DynamicImplementation{});
+		});
+    std::cout << "Dynamic (Virtuals): " << dynamicDuration.count() << " msecs\n";
 }
